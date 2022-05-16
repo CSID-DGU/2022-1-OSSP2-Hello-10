@@ -13,10 +13,10 @@ import networks
 from utils import download_model_if_doesnt_exist
 
 class DepthPrediction:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
-    def load_model(self, model_name  = "mono_640x192"):
+    def load_model(self, model_name  = "mono_640x192") -> None:
         download_model_if_doesnt_exist(model_name)
         self.encoder_path = os.path.join("models", model_name, "encoder.pth")
         self.depth_decoder_path = os.path.join("models", model_name, "depth.pth")
@@ -36,7 +36,7 @@ class DepthPrediction:
         self.depth_decoder.eval()
 
 
-    def pil_load_image(self, image_path = "assets/human_road_image.jpg"):
+    def pil_load_image(self, image_path = "assets/human_road_image.jpg") -> np.ndarray:
         self.input_image = pil.open(image_path).convert('RGB')
         self.original_width, self.original_height = self.input_image.size
 
@@ -46,7 +46,7 @@ class DepthPrediction:
         return input_image_resized
         
 
-    def cv_load_image(self, image_path = "assets/human_road_image.jpg"):
+    def cv_load_image(self, image_path = "assets/human_road_image.jpg") -> np.ndarray:
         self.input_image = cv2.imread(image_path)
         self.input_image = cv2.cvtColor(self.input_image, cv2.COLOR_BGR2RGB)
         self.original_height = self.input_image.shape[0]
@@ -58,7 +58,7 @@ class DepthPrediction:
         return input_image_resized
 
 
-    def predict(self, input_image_resized:np.ndarray):
+    def predict(self, input_image_resized:np.ndarray) -> np.ndarray:
         input_image_pytorch = transforms.ToTensor()(input_image_resized).unsqueeze(0)
 
         with torch.no_grad():
@@ -77,7 +77,7 @@ class DepthPrediction:
         return self.disp_resized_np
 
 
-    def show(self, vmax_percentage = 95):
+    def show(self, vmax_percentage = 95) -> None: # vmax_percentage의 백분위만큼 거리 예측 결과를 시각적 출력
         vmax = np.percentile(self.disp_resized_np, vmax_percentage) # 백분위 percentage% 수
 
         plt.figure(figsize=(10, 10))
