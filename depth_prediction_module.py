@@ -72,8 +72,9 @@ class DepthPrediction:
 
         # Saving colormapped depth image
         self.disp_resized_np = disp_resized.squeeze().cpu().numpy()
-        print("disp", self.disp_resized_np)
-        print(type(self.disp_resized_np))
+        # print("disp", self.disp_resized_np)
+        # print(type(self.disp_resized_np))
+        return self.disp_resized_np
 
 
     def show(self, vmax_percentage = 95):
