@@ -94,3 +94,12 @@ class DepModel :
         plt.axis('off')
 
         plt.show()
+
+    def res_show(self, vmax_percentage = 95):
+        vmax = np.percentile(self.disp_resized_np, vmax_percentage) # 백분위 percentage% 수
+
+        plt.imshow(self.disp_resized_np, cmap='magma', vmax=vmax)
+        # plt.title("Depth prediction", fontsize=22)
+        plt.axis('off')
+
+        plt.show()
