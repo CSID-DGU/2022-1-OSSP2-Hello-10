@@ -5,7 +5,21 @@ import numpy as np
 
 class Data:
     def calculate_danger(Road_kind, Objkind, distance) -> danger:
-        
+        distance = 1 / (int(distance) + 0.01)
+        if Objkind == "people":
+            distance *= 1
+        elif Objkind == "bicycle":
+            distance *= 1
+        elif Objkind == "motorcycle":
+            distance *= 1
+        elif Objkind == "car":
+            distance *= 1
+        elif Objkind == "tree":
+            distance *= 1
+        elif Objkind == "powerpole":
+            distance *= 1
+        elif Objkind == "fireplug":
+            distance *= 1 
         
     def __init__(self, Road_kind, Obj_kind, distance, danger) -> None:
         self.Obj_kind = Obj_kind
