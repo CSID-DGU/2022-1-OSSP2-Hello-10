@@ -130,5 +130,5 @@ dmypy.json
 
 
 # Custom
-.Watch_Out/processed/
-.Watch_Out/model_iou_77.pth.tar
+Watch_Out/processed/
+Watch_Out/model_iou_77.pth.tar
