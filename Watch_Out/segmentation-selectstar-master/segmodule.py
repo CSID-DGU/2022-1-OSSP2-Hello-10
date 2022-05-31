@@ -24,6 +24,7 @@ from tqdm import tqdm
 
 ### RUN OPTIONS ###
 MODEL_PATH = "../model_iou_77.pth.tar"
+# MODEL_PATH = "/content/drive/MyDrive/Watch_Out/model_iou.pth.tar"
 ORIGINAL_HEIGHT = 720
 ORIGINAL_WIDTH = 1280
 MODEL_HEIGHT = 512
@@ -172,7 +173,8 @@ class ModelWrapper:
         if not osp.isfile(MODEL_PATH):
             raise RuntimeError(
                 "=> no checkpoint found at '{}'".format(model_path))
-        checkpoint = torch.load(model_path)
+        checkpoint = torch.load(model_path, torch.device(
+            'cuda') if CUDA else torch.device('cpu'))
         if CUDA:
             model.module.load_state_dict(checkpoint['state_dict'])
         else:
