@@ -249,7 +249,7 @@ class SegModule:
 def convert(arr):
     i = 0
     for c in CUSTOM_COLOR_MAP:
-        np.place(arr, arr == c, i)
+        arr[(arr == c).all(axis=2)] = [i]
         i += 1
 
     return arr[:, :, 0]
