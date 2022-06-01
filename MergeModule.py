@@ -94,24 +94,29 @@ class MergeModule:
     def loc_object(self, size, objcet_location):  # 장애물 위치(좌측, 중앙, 우측)
         # 입력
         # size : 가로 x 세로, ex) (width, height)
-        # objcet_location : 인식된 장애물의 위치, [좌상 픽셀, 우하 픽셀], [x1, y1, x2, y2]
+        # objcet_location : 인식된 장애물의 위치, [좌상 픽셀, 우하 픽셀], [[x1, y1, x2, y2], ...]
         # 출력
-        # 좌측, 중앙, 우측 해당 여부, [bool, bool, bool]
-        res = [false, false, false]
-        width, height = size
-        left, right = objcet_location[0], objcet_location[2]
-        if width/3 > left:
-            res[0] = true  # 좌측 true로
-        elif width*2/3 > left:
-            res[1] = true  # 중앙을 true로
-        else:
-            res[2] = true  # 우측을 true로
-            return res
+        # 좌측, 중앙, 우측 해당 여부, [[bool, bool, bool], ...]
+        res = []
+        for loc in objcet_location:
+            temp = [false, false, false]
+            width, height = size
+            left, right = loc[0], loc[2]
+            if width/3 > left:
+                res[0] = true  # 좌측 true로
+            elif width*2/3 > left:
+                res[1] = true  # 중앙을 true로
+            else:
+                res[2] = true  # 우측을 true로
+                res.append(temp)
+                continue
 
-        if width/3 > right:
-            pass  # 좌측 이미 true일 것이므로 pass
-        elif width*2/3 > right:
-            res[1] = true  # 중앙 true로
-        else:
-            res[2] = true  # 우측을 true로
+            if width/3 > right:
+                pass  # 좌측 이미 true일 것이므로 pass
+            elif width*2/3 > right:
+                res[1] = true  # 중앙 true로
+            else:
+                res[2] = true  # 우측을 true로
+            res.append(temp)
+
         return res  # 함수 종료
