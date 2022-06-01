@@ -1,5 +1,4 @@
 import numpy as np
-from sqlalchemy import false, true
 from enum import Enum
 
 
@@ -99,24 +98,24 @@ class MergeModule:
         # 좌측, 중앙, 우측 해당 여부, [[bool, bool, bool], ...]
         res = []
         for loc in objcet_location:
-            temp = [false, false, false]
+            temp = [False, False, False]
             width, height = size
             left, right = loc[0], loc[2]
             if width/3 > left:
-                res[0] = true  # 좌측 true로
+                res[0] = True  # 좌측 True로
             elif width*2/3 > left:
-                res[1] = true  # 중앙을 true로
+                res[1] = True  # 중앙을 True로
             else:
-                res[2] = true  # 우측을 true로
+                res[2] = True  # 우측을 True로
                 res.append(temp)
                 continue
 
             if width/3 > right:
-                pass  # 좌측 이미 true일 것이므로 pass
+                pass  # 좌측 이미 True일 것이므로 pass
             elif width*2/3 > right:
-                res[1] = true  # 중앙 true로
+                res[1] = True  # 중앙 True로
             else:
-                res[2] = true  # 우측을 true로
+                res[2] = True  # 우측을 True로
             res.append(temp)
 
         return res  # 함수 종료
