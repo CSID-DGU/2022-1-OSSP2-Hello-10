@@ -19,18 +19,22 @@ def count_roads(arr):  # 도로 카테고리 별 픽셀 수
     # return : 인덱스 별 픽셀 수 ex list[6] = sidewalk 픽셀 수
     roads = []
     for r in Road:
-        roads += (arr == r).sum()
+        roads += (arr == r.value).sum()
     return roads
 
 
 class MergeModule:
     def __init__(self):
-        pass
+        self.now_road = 0  # 현재도로 초기값 background
 
-    def current_road(self, class_segmap):  # 현재 나의 도로
+    def current_road(self, class_segmap):  # 현재 나의 도로 enum 값
         # 입력
         # class_segmap : 인식된 도로의 class로 segmentation된 numpy array(img size)
-        roads = count_roads(class_segmap)
+        y, x = class_segmap.shape
+        # y 축의 하단 20%, x축의 중앙 30%로 Indexing
+        roads = count_roads(class_segmap[int(y*0.75):, int(x*0.3):int(x*0.65)])
+        new_road = roads.index(max(roads))  # 현재 나의 도로 enum 값
+        self.now_road = new_road  # 현재 나의 도로 update
 
     def dep_road(self):  # 도로 별 거리
         pass
