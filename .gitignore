@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom
+retinanet_r_50_fpn_3x_aihub_final.pth
