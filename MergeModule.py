@@ -82,6 +82,9 @@ class MergeModule:
         # objcet_class : 인식된 장애물의 class, [장애물, 장애물, 장애물, ...] ex)[1, 2, 3,...]
         # objcet_location : 인식된 장애물의 위치, [좌상 픽셀, 우하 픽셀], [[x1, y1, x2, y2], ...]
         # distance : 픽셀 별 상대적 거리, 1 channel numpy array
+        # 출력
+        # tuple(인식된 장애물의 class: list, 장애물 별 거리: list)
+        # ex) [1, 2, 3,...], [0.1, 0.4, 0.12, ...]
         res = []
         for loc in objcet_location:
             x1, x2, y1, y2 = loc
