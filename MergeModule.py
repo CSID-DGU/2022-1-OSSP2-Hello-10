@@ -23,11 +23,29 @@ def count_roads(arr):  # 도로 카테고리 별 픽셀 수
     return roads
 
 
+def reduce_arr(arr: np.ndarray, n: int) -> np.ndarray:
+    # 입력
+    # arr : 2차원 numpy array
+    # n : int
+    # return : 1/n로 축소된 arr
+    if arr.ndim !=2:
+      print("2차원 배열만 처리 가능합니다.")
+      return
+    
+    column, row = arr.shape
+    for i in range(column, 0, -n):
+      arr = np.delete(arr, i, axis=0)
+
+    for i in range(row, 0, -n):
+      arr = np.delete(arr, i, axis = 1)
+    
+    return arr
+
 class MergeModule:
     def __init__(self):
         self.now_road = 0  # 현재도로 초기값 background
 
-    def current_road(self, class_segmap):  # 현재 나의 도로 enum 값
+    def current_road(self, class_segmap, distance):  # 현재 나의 도로 enum 값
         # 입력
         # class_segmap : 인식된 도로의 class로 segmentation된 numpy array(img size)
         y, x = class_segmap.shape
@@ -36,8 +54,28 @@ class MergeModule:
         new_road = roads.index(max(roads))  # 현재 나의 도로 enum 값
         self.now_road = new_road  # 현재 나의 도로 update
 
-    def dep_road(self):  # 도로 별 거리
-        pass
+    def dep_road(self, class_segmap, distance, reduce = 4):  # 도로 별 거리
+        # 입력
+        # class_segmap : 인식된 도로의 class로 segmentation된 1 channel numpy array(img size)
+        # distance : 픽셀 별 상대적 거리, 1 channel numpy array(img size)
+        # 출력
+        # Road에 저장된 도로 클래스 별로 거리가 존재하는 경우 0~1 사이의 실수로, 아닌 경우, 100.0을 출력 
+        # 배열 크기는 Road에 저장된 도로 클래스의 수와 같다.
+        # ex) [0.1, 0.4, 0.3, 0.1, 100.0, 0.3, 0.12]
+
+        res = [100.0 for r in Road] # 도로 수만큼 100.0을 원소로 가지는 배열 생성
+
+        reduced_segmap = reduce_arr(class_segmap, reduce) # 1/reduce로 축소
+        reduced_distance = reduce_arr(distance, reduce)
+
+        reduced_segmap.reshape(-1) # 1차원으로 차원 축소
+        reduced_distance.reshape(-1)
+
+        for class_seg, distance in zip(reduced_segmap, reduced_distance):
+          if res[class_seg] > distance:
+            res[class_seg] = distance # 저장된 최소 거리보다 작은 값이 입력으로 들어오면, 클래스의 최소 거리를 업데이트
+
+        return res
 
     def dep_objects(self, object_class, objcet_location, distance):  # 장애물 별 거리
         # 입력
