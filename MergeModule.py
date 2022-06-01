@@ -58,6 +58,7 @@ class MergeModule:
         # 입력
         # class_segmap : 인식된 도로의 class로 segmentation된 1 channel numpy array(img size)
         # distance : 픽셀 별 상대적 거리, 1 channel numpy array(img size)
+        # reduce : 축소할 비율, 1/reduce로 축소되어서 처리됨
         # 출력
         # Road에 저장된 도로 클래스 별로 거리가 존재하는 경우 0~1 사이의 실수로, 아닌 경우, 100.0을 출력 
         # 배열 크기는 Road에 저장된 도로 클래스의 수와 같다.
