@@ -26,7 +26,7 @@ class Alarm:
         elif classes == 3:
             c = '가로수'
         elif classes == 4:
-            c = '차량'
+            c = '자동차'
         elif classes == 5:
             c = '신호등'
         elif classes == 6:
@@ -34,11 +34,11 @@ class Alarm:
         elif classes == 7:
             c = '버스'
         elif classes == 8:
-            c = '신호등'
+            c = '표지판'
         elif classes == 9:
             c = '오토바이'
         elif classes == 10:
-            c = '표지판'
+            c = '간판'
         elif classes == 11:
             c = '화분'
         elif classes == 12:
