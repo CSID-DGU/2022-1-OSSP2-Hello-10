@@ -1,3 +1,12 @@
+# DepModule 거리 인식 모듈
+
+- 실행에 필요한 파일 및 폴더
+    * depmodule.py
+    * util.py
+    * network 폴더(\_\_init\_\_.py, depth_decoder.py, pose_cnn.py, pose_decoder.py, resnet_encoder.py)
+
+- 사용법 : 모듈을 import한 파이썬 파일을 만든다. 아래와 같이 사용할 수 있다.
+```python3
 from depmodule import DepModel
 import cv2
 
@@ -21,3 +30,4 @@ res = depmodel.predict(image)
 
 # 5. 결과 시각화(디버깅용)
 depmodel.show(vmax_percentage = 99)
+```
