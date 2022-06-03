@@ -2,6 +2,7 @@
 # 도로 이탈은 높은 위험도로 설정한다.
 # 횡단보도 일정거리 이하로 들어오면 장애물에 넣는다.
 import numpy as np
+import MergeModule
 # 위험도의 초대값은 100으로 설정
 # 거리는 대략적인 상대값이 나오고 이 상대적인 값도 정확하지 않기 때문에 소수점 첫째자리까지만 사용
 # 도로이탈의 위험도는 특정 거리안에서 100 상수로 설정 같은 위험도가 있더라도 가장 우선순위로 한다.
@@ -28,28 +29,33 @@ class Data:
             return 0.8
         else:
             return 0.9
-    def calculate_danger(Road_kind, Objkind, distance):
-        danger = 1 / (int(distance) + 0.01)
-        if Objkind == "people":
-            danger *= 1
-        elif Objkind == "bicycle":
-            danger *= 1
-        elif Objkind == "motorcycle":
-            danger *= 1
-        elif Objkind == "car":
-            danger *= 1
-        elif Objkind == "tree":
-            danger *= 1
-        elif Objkind == "powerpole":
-            danger *= 1
-        elif Objkind == "fireplug":
-            danger *= 1 
+    def calculate_danger(self, obj_class, obj_distance):
+        danger = 0
         return danger
+    
+    def return_highest_danger(self, object_class, loc_obj_res, dep_obj_res, dep_road_res, cur_road):
+        #입력
+        # object_class : 인식된 장애물의 class, [장애물, 장애물, 장애물, ...] ex)[1, 2, 3,...]
+        # loc_obj_res : 인식된 장애물의 위치
+        # dep_obj_res : 인식된 장애물의 거리
+        # dep_road_res : 도로별 가장 가까운 거리
+		# cur_road : 현재 사용자가 있는 도로의 종류
+        #현재 도로가 인도일 때 차도가 일정거리 이내이면 도로이탈 반환
+        if cur_road == 6 and self.trans_distance(dep_road_res[5]) <= 0.4:
+            res = 0
+            return res
+        danger = -1
+        res
+        #한 프레임 내의 장애물의 위험도를 계산하여 가장 높은 위험도를 가진 장애물의 종류와 위치를 반환
+        for i in range(len(dep_obj_res)):
+            temp = self.calculate_danger(object_class[i], dep_obj_res[i])
+            if danger < temp:
+                res = [object_class[i], loc_obj_res[i]]
+        return res
+                
         
-    def __init__(self, Road_kind, Obj_kind, distance, danger) -> None:
-        self.Obj_kind = Obj_kind
-        self.distance = distance
-        self.danger = calculate_danger(Road_kind, Obj_kind, distance)
+    def __init__(self):
+        self.danger = 0
         
     def __lt__(self, other):
         return self.danger < other.danger
