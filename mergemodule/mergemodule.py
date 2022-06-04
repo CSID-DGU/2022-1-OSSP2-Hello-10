@@ -26,16 +26,19 @@ def reduce_arr(arr: np.ndarray, n: int) -> np.ndarray:
     # 입력
     # arr : 2차원 numpy array
     # n : int
-    # return : 1/n로 축소된 arr
+    # return : n 행 및 열 마다 1개씩 축소된 arr
     if arr.ndim !=2:
       print("2차원 배열만 처리 가능합니다.")
       return
     
+    if n==0:
+        return arr
+
     column, row = arr.shape
-    for i in range(column, 0, -n):
+    for i in range(column-1, -1, -n):
       arr = np.delete(arr, i, axis=0)
 
-    for i in range(row, 0, -n):
+    for i in range(row-1, -1, -n):
       arr = np.delete(arr, i, axis = 1)
     
     return arr
@@ -57,7 +60,7 @@ class MergeModule:
         # 입력
         # class_segmap : 인식된 도로의 class로 segmentation된 1 channel numpy array(img size)
         # distance : 픽셀 별 상대적 거리, 1 channel numpy array(img size)
-        # reduce : 축소할 비율, 1/reduce로 축소되어서 처리됨
+        # reduce : 축소할 비율, n 행 및 열 마다 1개씩 축소되어 처리됨
         # 출력
         # Road에 저장된 도로 클래스 별로 거리가 존재하는 경우 0~1 사이의 실수로, 아닌 경우, 100.0을 출력 
         # 배열 크기는 Road에 저장된 도로 클래스의 수와 같다.
@@ -68,8 +71,8 @@ class MergeModule:
         reduced_segmap = reduce_arr(class_segmap, reduce) # 1/reduce로 축소
         reduced_distance = reduce_arr(distance, reduce)
 
-        reduced_segmap.reshape(-1) # 1차원으로 차원 축소
-        reduced_distance.reshape(-1)
+        reduced_segmap = np.reshape(reduced_segmap, (-1)) # 1차원으로 차원 축소
+        reduced_distance = np.reshape(reduced_distance, (-1))
 
         for class_seg, distance in zip(reduced_segmap, reduced_distance):
           if res[class_seg] > distance:
