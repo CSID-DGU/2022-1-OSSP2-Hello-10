@@ -29,6 +29,6 @@ print("장애물 클래스:",do[0],", 장애물 별 거리", do[1])
 # 장애물 클래스: [0 1] , 장애물 별 거리 [0.1, 0.02]
 
 # 장애물 위치(좌측, 중앙, 우측) test
-lo = mm.loc_object(objcet_location.shape, objcet_location) # 정상 작동
+lo = mm.loc_object(class_segmap.shape, objcet_location) # 정상 작동
 print("장애물 위치[좌측, 중앙, 우측]:",lo)
 # 장애물 위치[좌측, 중앙, 우측]: [[True, True, False], [False, True, True]]
