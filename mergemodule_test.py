@@ -26,3 +26,6 @@ print("도로 별 거리:", dr)
 do = mm.dep_objects(object_class, objcet_location, distance) # 정상 실행
 print("장애물 클래스:",do[0],", 장애물 별 거리", do[1])
 
+# 장애물 위치(좌측, 중앙, 우측) test
+lo = mm.loc_object(objcet_location.shape, objcet_location) # 정상 작동
+print("장애물 위치[좌측, 중앙, 우측]:",lo)

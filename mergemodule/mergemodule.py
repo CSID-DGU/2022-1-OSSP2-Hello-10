@@ -108,20 +108,20 @@ class MergeModule:
             width, height = size
             left, right = loc[0], loc[2]
             if width/3 > left:
-                res[0] = True  # 좌측 True로
+                temp[0] = True  # 좌측 True로
             elif width*2/3 > left:
-                res[1] = True  # 중앙을 True로
+                temp[1] = True  # 중앙을 True로
             else:
-                res[2] = True  # 우측을 True로
+                temp[2] = True  # 우측을 True로
                 res.append(temp)
                 continue
 
             if width/3 > right:
                 pass  # 좌측 이미 True일 것이므로 pass
             elif width*2/3 > right:
-                res[1] = True  # 중앙 True로
+                temp[1] = True  # 중앙 True로
             else:
-                res[2] = True  # 우측을 True로
+                temp[2] = True  # 우측을 True로
             res.append(temp)
 
         return res  # 함수 종료
