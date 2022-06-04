@@ -47,7 +47,7 @@ class MergeModule:
     def __init__(self):
         self.now_road = 0  # 현재도로 초기값 background
 
-    def current_road(self, class_segmap, distance):  # 현재 나의 도로 enum 값
+    def current_road(self, class_segmap):  # 현재 나의 도로 enum 값
         # 입력
         # class_segmap : 인식된 도로의 class로 segmentation된 numpy array(img size)
         y, x = class_segmap.shape
