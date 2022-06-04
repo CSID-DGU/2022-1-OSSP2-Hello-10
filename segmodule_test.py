@@ -1,4 +1,4 @@
-import segmodule
+from segmodule.segmodule import segmodule
 import cv2
 
 SegModel = segmodule.SegModel()

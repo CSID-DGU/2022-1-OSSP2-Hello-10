@@ -1,4 +1,4 @@
-import odmodule
+from odmodule.odmodule import odmodule
 
 OdModel = odmodule.OdModel()
 
