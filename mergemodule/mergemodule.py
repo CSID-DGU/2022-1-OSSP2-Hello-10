@@ -90,9 +90,9 @@ class MergeModule:
         # ex) [1, 2, 3,...], [0.1, 0.4, 0.12, ...]
         res = []
         for loc in objcet_location:
-            x1, x2, y1, y2 = loc
+            x1, y1, x2, y2 = loc
             # distance를 장애물의 범위 내로 슬라이싱
-            cut_distance = distance[y1:y2, x1:x2]
+            cut_distance = distance[y1:y2+1, x1:x2+1]
             res.append(np.min(cut_distance))  # 최솟값 추가
         return object_class, res
 
