@@ -1,6 +1,6 @@
 from alarm import Alarm
 
 
-classes, distance = [3, [True, True, False]]
+classes, direction = [0, [False, True, True]]
 a = Alarm()
-a.runmodule(classes, distance)
+a.runmodule(classes, direction)
