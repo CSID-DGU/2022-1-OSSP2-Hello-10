@@ -18,7 +18,7 @@ def count_roads(arr):  # 도로 카테고리 별 픽셀 수
     # return : 인덱스 별 픽셀 수 ex list[6] = sidewalk 픽셀 수
     roads = []
     for r in Road:
-        roads += (arr == r.value).sum()
+        roads += [(arr == r.value).sum()]
     return roads
 
 
