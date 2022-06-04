@@ -14,8 +14,9 @@ object_class = np.array([0, 1])
 objcet_location = np.array([[0,0,1,1],[1,1,2,2]])
 
 # 현재 나의 도로 test
-# cr = mm.current_road(class_segmap, []) # 오류
-# print("현재 나의 도로:",cr)
+mm.current_road(class_segmap) # 오류
+cr = mm.now_road
+print("현재 나의 도로:",cr)
 
 
 # 도로 별 거리 test
