@@ -8,7 +8,7 @@ from calculate.calculate import Data
 from threading import Thread
 
 
-def od_pred(id, img):
+def od_pred(img):
     global object_class, object_location, size, OdModule
     od_outputs, _ = OdModule.predict(img)
     object_class = od_outputs['instances'].pred_classes.numpy()
@@ -17,13 +17,13 @@ def od_pred(id, img):
     object_location = object_location.astype(int)
 
 
-def seg_pred(id, img):
+def seg_pred(img):
     global class_segmap, SegModule
     segmap, _ = SegModule.predict(img)
     class_segmap = segmodule.convert(segmap)
 
 
-def dep_pred(id, img):
+def dep_pred(img):
     global distance, DepModule
     image = DepModule.preprocess_image(img)
     distance = DepModule.predict(image)
@@ -45,15 +45,15 @@ while(True):
 
     object_location, object_class, size = None, None, None
     th1 = Thread(
-        target=od_pred, args=(1, image))
+        target=od_pred, args=(image))
     th1.start()
 
     class_segmap = None
-    th2 = Thread(target=seg_pred, args=(2, image))
+    th2 = Thread(target=seg_pred, args=(image))
     th2.start()
 
     distance = None
-    th3 = Thread(target=dep_pred, args=(3, image))
+    th3 = Thread(target=dep_pred, args=(image))
     th3.start()
 
     th1.join()
