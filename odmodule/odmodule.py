@@ -22,10 +22,11 @@ class OdModel():
     def __init__(self):
         setup_logger()
         cfg = get_cfg()
-        cfg.merge_from_file("Base-RetinaNet.yaml")
-        # cfg.merge_from_file("/content/drive/MyDrive/Base-RetinaNet.yaml") # Ver.Colab
-        cfg.MODEL.WEIGHTS = "retinanet_r_50_fpn_3x_aihub_final.pth"  # model path
-        # cfg.MODEL.WEIGHTS = "/content/drive/MyDrive/retinanet_r_50_fpn_3x_aihub_final.pth"  # Ver.Colab
+        # cfg.merge_from_file("Base-RetinaNet.yaml")
+        cfg.merge_from_file(
+            "/content/drive/MyDrive/Base-RetinaNet.yaml")  # Ver.Colab
+        # cfg.MODEL.WEIGHTS = "retinanet_r_50_fpn_3x_aihub_final.pth"  # model path
+        cfg.MODEL.WEIGHTS = "/content/drive/MyDrive/retinanet_r_50_fpn_3x_aihub_final.pth"  # Ver.Colab
         cfg.MODEL.RETINANET.SCORE_THRESH_TEST = 0.5
 
         if not torch.cuda.is_available():

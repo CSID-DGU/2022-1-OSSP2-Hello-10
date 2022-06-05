@@ -23,8 +23,8 @@ from PIL import Image
 from tqdm import tqdm
 
 ### RUN OPTIONS ###
-MODEL_PATH = "model_iou_77.pth.tar"
-# MODEL_PATH = "/content/drive/MyDrive/Watch_Out/model_iou.pth.tar"
+# MODEL_PATH = "model_iou_77.pth.tar"
+MODEL_PATH = "/content/drive/MyDrive/WO/model_iou.pth.tar"
 ORIGINAL_HEIGHT = 720
 ORIGINAL_WIDTH = 1280
 MODEL_HEIGHT = 512
