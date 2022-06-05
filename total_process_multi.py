@@ -26,13 +26,13 @@ def seg_pred(id, img):
 def dep_pred(id, img):
     global distance, DepModule
     image = DepModule.preprocess_image(img)
-    distance = DepModule.predict(img)
+    distance = DepModule.predict(image)
 
 
 OdModule = OdModel()
 SegModule = segmodule.SegModule()
 DepModule = DepModel()
-DepModule.load_model(model_name  = "mono_640x192")
+DepModule.load_model(model_name="mono_640x192")
 MgModule = MergeModule()
 CacModule = Data()
 ArModule = Alarm()
