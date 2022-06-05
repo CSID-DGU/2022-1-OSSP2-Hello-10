@@ -1,4 +1,4 @@
-from alarm import Alarm
+from alarmmodule.alarmmodule import Alarm
 
 
 classes, direction = [0, [False, True, True]]
