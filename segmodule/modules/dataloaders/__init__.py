@@ -1,5 +1,5 @@
 from torch.utils.data import DataLoader
-import settings
+from segmodule import settings
 
 def make_data_loader(**kwargs):
 

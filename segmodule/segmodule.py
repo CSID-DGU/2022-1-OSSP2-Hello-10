@@ -15,9 +15,9 @@ import os
 import os.path as osp
 from pathlib import Path
 from torchvision import transforms
-from modules.dataloaders.utils import decode_segmap
-from modules.models.deeplab_xception import DeepLabv3_plus
-from modules.models.sync_batchnorm.replicate import patch_replication_callback
+from .modules.dataloaders.utils import decode_segmap
+from .modules.models.deeplab_xception import DeepLabv3_plus
+from .modules.models.sync_batchnorm.replicate import patch_replication_callback
 import numpy as np
 from PIL import Image
 from tqdm import tqdm
