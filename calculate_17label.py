@@ -36,13 +36,13 @@ class Data:
         else:
             return 0.9
     def calculate_danger(self, obj_class, obj_distance):
-        # 5. car 7. truck 8. bus 10. motorcycle
-        if obj_class == 5 or obj_class == 7 or obj_class == 8 or obj_class == 10:
+        # 1. bicycle 2. scooter 3. carrier 4. bus 5. car 6. truck 7. motorcycle
+        if obj_class == 1 or obj_class == 2 or obj_class == 3 or obj_class == 4 or obj_class == 5 or obj_class == 6 or obj_class == 7:
             i = 0
-        # 1. person 11. movable_signage
-        elif obj_class == 1 or obj_class == 11:
+        # 8. person
+        elif obj_class == 8:
             i = 1
-        # 2. pole 3. bollard 4. tree_trunk 6. trafficlight 9. traffic_sign 12. potted_plant 13. wheelchair
+        # 9. barricade 10. fire_hydrant 11. tree_trunk 12. bench 13. chair 14. pole 15. traffic_light 16. traffic_sign
         else:
             i = 2
         if obj_distance >= 0 and obj_distance <= 0.3:
