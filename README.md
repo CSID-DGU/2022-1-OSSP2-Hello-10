@@ -3,6 +3,8 @@
 
 ## Walking Assist System
 
+# 딥러닝과 컴퓨터 비전을 활용한 시각장애인 보행 보조 장치
+# Walking Assit System with Deep Learning and Computer Vision
 
 ## Seg Module
 
