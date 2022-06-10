@@ -71,8 +71,8 @@ class Alarm:
                 playsound.playsound('beep.wav')
                 self.speak("전방에" + ",," + "횡단보도")
             else:
-                d = self.transform_dist(direction)
-                c = self.transform_obj(classes)
+                d = self.transform_dist(direction[i])
+                c = self.transform_obj(classes[i])
                 playsound.playsound('beep.wav')
                 self.speak(d + ",," + c)
 
