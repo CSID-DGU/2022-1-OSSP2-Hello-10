@@ -62,16 +62,18 @@ class Alarm:
         return d
 
     def runmodule(self, classes, direction):
-        if classes == -1:
-            playsound.playsound('beep.wav')
-            self.speak("인도 벗어남")
-        elif classes == -2:
-            playsound.playsound('beep.wav')
-            self.speak("전방에" + ",," + "횡단보도")
-        else:
-            d = self.transform_dist(direction)
-            c = self.transform_obj(classes)
-            playsound.playsound('beep.wav')
-            self.speak(d + ",," + c)
+        num = len(classes)
+        for i in range(num):
+            if classes[i] == -1:
+                playsound.playsound('beep.wav')
+                self.speak("인도 벗어남")
+            elif classes[i] == -2:
+                playsound.playsound('beep.wav')
+                self.speak("전방에" + ",," + "횡단보도")
+            else:
+                d = self.transform_dist(direction)
+                c = self.transform_obj(classes)
+                playsound.playsound('beep.wav')
+                self.speak(d + ",," + c)
 
 
