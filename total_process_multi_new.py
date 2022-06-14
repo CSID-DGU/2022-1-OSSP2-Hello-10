@@ -92,9 +92,11 @@ while(True):
     od_location = MgModule.loc_object(size, object_location)
     print("정보 종합 모듈 Finished")
 
+    num_detect = int(input('한 프레임당 탐색 개체 수 : '))
+
     print("위험도 계산 모듈 Loaded")
     classes, direction, order = CacModule.return_highest_danger(
-        od_classes, od_location, res, dep_road_res, cur_road)
+        od_classes, od_location, res, dep_road_res, cur_road, num_detect)
     print("위험도 계산 모듈 Finished")
 
     th4 = Thread(target=exe_alarm, args=(4, image, classes, direction, order, object_location))
