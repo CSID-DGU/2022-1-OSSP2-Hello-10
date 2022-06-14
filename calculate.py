@@ -11,9 +11,9 @@ import MergeModule
 # 위험 수준을 4가지로 구분해서 나눈다 도로이탈, 차량, {자전거, 사람}, {소화전, 가로수, 전봇대}
 # 5, 10
 class Data:
-    same_side = np.array([[9, 7, 5],
-                          [8, 6, 2],
-                          [4, 3, 1]])
+    same_side = np.array([[9, 7, 5, 0],
+                          [8, 6, 2, 0],
+                          [4, 3, 1, 0]])
     def trans_distance(self, distance):
         if distance >= 0 and distance < 0.1:
             return 0
@@ -45,12 +45,14 @@ class Data:
         # 2. pole 3. bollard 4. tree_trunk 6. trafficlight 9. traffic_sign 12. potted_plant 13. wheelchair
         else:
             i = 2
-        if obj_distance >= 0 and obj_distance <= 0.3:
+        if obj_distance >= 0 and obj_distance <= 0.2:
             j = 0
-        elif obj_distance >= 0.4 and obj_distance <= 0.7:
+        elif obj_distance >= 0.3 and obj_distance <= 0.4:
             j = 1
-        else:
+        elif obj_distance >= 0.5 and obj_distance <= 0.6:
             j = 2
+        else:
+            j = 3
         return self.same_side[i][j]
     
     def return_highest_danger(self, object_class, loc_obj_res, dep_obj_res, dep_road_res, cur_road):
