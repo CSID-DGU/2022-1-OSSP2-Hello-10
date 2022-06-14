@@ -45,7 +45,7 @@ def exe_alarm(id, image, classes, direction, order, object_location):
             # 도로 시각화
         else:
             res_img = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
-                                    (object_location[order[i]][2], object_location[order[i]][3]), bbox_color[i], 2)
+                                    (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
             ArModule.runmodule(classes[i], direction[i])
             cv2.imshow("result", res_img)
             cv2.waitKey(2000)
@@ -65,7 +65,6 @@ cap = cv2.VideoCapture("street3.avi")
 while(True):
     start = time.time()
     ret, image = cap.read()
-    bbox_color = [list(np.random.random(size=3) * 256) for _ in range(3000)]
 
     object_location, object_class, size = None, None, None
     th1 = Thread(
