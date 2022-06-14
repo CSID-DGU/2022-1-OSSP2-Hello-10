@@ -9,6 +9,7 @@ from calculate.calculate import Data
 from threading import Thread
 import time
 
+
 def od_pred(id, img):
     print("장애물 인식 모듈 Loaded")
     global object_class, object_location, size, OdModule
@@ -21,7 +22,6 @@ def od_pred(id, img):
 
 
 def seg_pred(id, img):
-    print("도로 인식 모듈 Loaded")
     global class_segmap, SegModule
     segmap, _ = SegModule.predict(img)
     class_segmap = segmodule.convert(segmap)
@@ -29,14 +29,13 @@ def seg_pred(id, img):
 
 
 def dep_pred(id, img):
-    print("거리 예측 모듈 Loaded")
     global distance, DepModule
     image = DepModule.preprocess_image(img)
     distance = DepModule.predict(image)
     print("거리 예측 모듈 Finished")
 
+
 def exe_alarm(id, image, classes, direction, order, object_location):
-    print("알람 모듈 Loaded")
     global ArModule
     num = len(classes)
     for i in range(num):
@@ -53,12 +52,18 @@ def exe_alarm(id, image, classes, direction, order, object_location):
 
 
 OdModule = OdModel()
+print("장애물 인식 모듈 Loaded")
 SegModule = segmodule.SegModule()
+print("도로 인식 모듈 Loaded")
 DepModule = DepModel()
 DepModule.load_model(model_name="mono_640x192")
+print("거리 예측 모듈 Loaded")
 MgModule = MergeModule()
+print("정보 종합 모듈 Loaded")
 CacModule = Data()
+print("위험도 계산 모듈 Loaded")
 ArModule = Alarm()
+print("알람 모듈 Loaded")
 
 cap = cv2.VideoCapture("street3.avi")
 
@@ -83,7 +88,6 @@ while(True):
     th2.join()
     th3.join()
 
-    print("정보 종합 모듈 Loaded")
     MgModule.current_road(class_segmap)
     cur_road = MgModule.now_road
     dep_road_res = MgModule.dep_road(class_segmap, distance)
@@ -94,12 +98,14 @@ while(True):
 
     num_detect = int(input('한 프레임당 탐색 개체 수 : '))
 
-    print("위험도 계산 모듈 Loaded")
     classes, direction, order = CacModule.return_highest_danger(
         od_classes, od_location, res, dep_road_res, cur_road, num_detect)
     print("위험도 계산 모듈 Finished")
 
-    th4 = Thread(target=exe_alarm, args=(4, image, classes, direction, order, object_location))
+    th4 = Thread(target=exe_alarm, args=(
+        4, image, classes, direction, order, object_location))
+    if th4.is_alive():
+        th4.join()
     th4.start()
 
     end = time.time()

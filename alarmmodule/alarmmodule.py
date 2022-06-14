@@ -1,8 +1,9 @@
-#pip install pyttsx3
-#pip install playsound == 1.2.2
+# pip install pyttsx3
+# pip install playsound == 1.2.2
 
 import playsound
 import pyttsx3
+
 
 class Alarm:
     def __init__(self) -> None:
@@ -73,5 +74,3 @@ class Alarm:
             c = self.transform_obj(classes)
             playsound.playsound('beep.wav')
             self.speak(d + ",," + c)
-
-
