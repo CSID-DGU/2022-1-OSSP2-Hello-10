@@ -10,7 +10,7 @@ from threading import Thread
 import time
 
 NUMBER_OUT_SPEACH = 1
-VISUALIZE = False
+VISUALIZE = True
 
 def od_pred(id, img):
     global object_class, object_location, size, OdModule
@@ -23,9 +23,10 @@ def od_pred(id, img):
 
 
 def seg_pred(id, img):
-    global class_segmap, SegModule
-    segmap, _ = SegModule.predict(img)
+    global class_segmap, color_segmap, SegModule
+    segmap, color_segmap = SegModule.predict(img)
     class_segmap = segmodule.convert(segmap)
+
     print("도로 인식 모듈 Finished")
 
 
@@ -36,30 +37,37 @@ def dep_pred(id, img):
     print("거리 예측 모듈 Finished")
 
 
-def exe_alarm(id, image, classes, direction, order, object_location: np.ndarray):
+def exe_alarm(id, image, classes, direction, order, object_location, class_segmap):
     global ArModule
 
-    if object_location.size: # 값이 존재하면
-        
+    if type(image) == np.ndarray: # 값이 들어왔으면
+        res_image = None
         org_image = image.copy()
         num = classes.size
         for i in range(num):
             if classes[i] == -1 or classes[i] == -2:
                 ArModule.runmodule(classes[i], direction[i])
                 # 도로 시각화
-                if VISUALIZE:
-                    pass
+                if VISUALIZE and classes[i] == -2: # 횡단보도 시각화
+                    h, w, _ = np.array(image).shape
+                    res_image = cv2.resize(color_segmap, (w, h))
 
             else:
                 # 장애물 시각화
                 if VISUALIZE:
                     res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
                                             (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
-                    cv2.imshow("result", res_image)
-                    cv2.waitKey(2000)
-                    cv2.destroyAllWindows()
+                    # cv2.imshow("result", res_image)
+                    # cv2.waitKey(2000)
+                    # cv2.destroyAllWindows()
                 ArModule.runmodule(classes[i], direction[i])
                 image = org_image.copy()
+            
+            if VISUALIZE:
+                cv2.imshow("result", res_image)
+                cv2.waitKey(2000)
+                cv2.destroyAllWindows()
+
         print("알람 모듈 Finished")
 
 
@@ -78,11 +86,11 @@ ArModule = Alarm()
 print("알람 모듈 Loaded")
 
 cap = cv2.VideoCapture("street3.avi")
-image, classes, direction, order, object_location = np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
+image, classes, direction, order, object_location, color_segmap = None, None, None, None, None, None
 while(True):
     
     th4 = Thread(target=exe_alarm, args=(
-        4, image, classes, direction, order, object_location))
+        4, image, classes, direction, order, object_location, color_segmap))
     # if th4.is_alive():
     th4.start()
 
@@ -94,7 +102,7 @@ while(True):
         target=od_pred, args=(1, image))
     th1.start()
 
-    class_segmap = None
+    class_segmap, color_segmap = None, None
     th2 = Thread(target=seg_pred, args=(2, image))
     th2.start()
 
