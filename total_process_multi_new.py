@@ -10,6 +10,7 @@ from threading import Thread
 import time
 
 NUMBER_OUT_SPEACH = 1
+VISUALIZE = False
 
 def od_pred(id, img):
     global object_class, object_location, size, OdModule
@@ -46,13 +47,18 @@ def exe_alarm(id, image, classes, direction, order, object_location: np.ndarray)
             if classes[i] == -1 or classes[i] == -2:
                 ArModule.runmodule(classes[i], direction[i])
                 # 도로 시각화
+                if VISUALIZE:
+                    pass
+
             else:
-                # res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
-                                        # (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
+                # 장애물 시각화
+                if VISUALIZE:
+                    res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
+                                            (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
+                    cv2.imshow("result", res_image)
+                    cv2.waitKey(2000)
+                    cv2.destroyAllWindows()
                 ArModule.runmodule(classes[i], direction[i])
-                # cv2.imshow("result", res_image)
-                # cv2.waitKey(2000)
-                # cv2.destroyAllWindows()
                 image = org_image.copy()
         print("알람 모듈 Finished")
 
