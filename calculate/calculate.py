@@ -68,15 +68,15 @@ class Data:
         res = []
         # print("type", type(self))
         if cur_road == 6 and dep_road_res[5] <= 0.1:
-            temp.append([-1, 0, 11])
+            temp.append([-1, 0, -1, 11])
         if cur_road == 6 and dep_road_res[5] <= 0.15:
-            temp.append([-2, 0, 10])
+            temp.append([-2, 0, -1, 10])
         #한 프레임 내의 장애물의 위험도를 계산하여 가장 높은 위험도를 가진 장애물의 종류와 위치를 반환
         for i in range(len(dep_obj_res)):
             danger = self.calculate_danger(object_class[i], dep_obj_res[i])
-            # print("temp : ", temp)
-            # print("temp : ", object_class[i])
-            # print("temp : ", loc_obj_res[i])
+            # print("danger : ", danger)
+            # print("class : ", object_class[i])
+            # print("location : ", loc_obj_res[i])
             temp.append([object_class[i], loc_obj_res[i], i, danger])
         #temp에 있는 장애물 객체를 3번쨰 열의 위험도 점수에 따라 내림차순으로 정렬한다.
         temp.sort(key=lambda x:-x[3])
