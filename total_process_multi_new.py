@@ -65,6 +65,8 @@ print("위험도 계산 모듈 Loaded")
 ArModule = Alarm()
 print("알람 모듈 Loaded")
 
+ArModule.loadspeak()
+
 cap = cv2.VideoCapture("street3.avi")
 
 while(True):

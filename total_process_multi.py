@@ -9,7 +9,6 @@ from threading import Thread
 
 
 def od_pred(id, img):
-    print("장애물 인식 모듈 Loaded")
     global object_class, object_location, size, OdModule
     od_outputs, _ = OdModule.predict(img)
     object_class = od_outputs['instances'].pred_classes.cpu().numpy()
@@ -20,7 +19,6 @@ def od_pred(id, img):
 
 
 def seg_pred(id, img):
-    print("도로 인식 모듈 Loaded")
     global class_segmap, SegModule
     segmap, _ = SegModule.predict(img)
     class_segmap = segmodule.convert(segmap)
@@ -28,26 +26,32 @@ def seg_pred(id, img):
 
 
 def dep_pred(id, img):
-    print("거리 예측 모듈 Loaded")
     global distance, DepModule
     image = DepModule.preprocess_image(img)
     distance = DepModule.predict(image)
     print("거리 예측 모듈 Finished")
 
 def exe_alarm(id, classes, direction):
-    print("알람 모듈 Loaded")
     global ArModule
     ArModule.runmodule(classes, direction)
     print("알람 모듈 Finished")
 
 
 OdModule = OdModel()
+print("장애물 인식 모듈 Loaded")
 SegModule = segmodule.SegModule()
+print("도로 인식 모듈 Loaded")
 DepModule = DepModel()
 DepModule.load_model(model_name="mono_640x192")
+print("거리 예측 모듈 Loaded")
 MgModule = MergeModule()
+print("정보 종합 모듈 Loaded")
 CacModule = Data()
+print("위험도 계산 모듈 Loaded")
 ArModule = Alarm()
+print("알람 모듈 Loaded")
+
+ArModule.loadspeak()
 
 cap = cv2.VideoCapture(1)
 
@@ -72,7 +76,6 @@ while(True):
     th2.join()
     th3.join()
 
-    print("정보 종합 모듈 Loaded")
     MgModule.current_road(class_segmap)
     cur_road = MgModule.now_road
     dep_road_res = MgModule.dep_road(class_segmap, distance)
@@ -81,7 +84,6 @@ while(True):
     od_location = MgModule.loc_object(size, object_location)
     print("정보 종합 모듈 Finished")
 
-    print("위험도 계산 모듈 Loaded")
     classes, direction = CacModule.return_highest_danger(
         od_classes, od_location, res, dep_road_res, cur_road)
     print("위험도 계산 모듈 Finished")
