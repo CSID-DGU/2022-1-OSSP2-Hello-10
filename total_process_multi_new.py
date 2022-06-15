@@ -9,6 +9,7 @@ from calculate.calculate import Data
 from threading import Thread
 import time
 
+NUMBER_OUT_SPEACH = 1
 
 def od_pred(id, img):
     global object_class, object_location, size, OdModule
@@ -108,7 +109,7 @@ while(True):
     od_location = MgModule.loc_object(size, object_location)
     print("정보 종합 모듈 Finished")
 
-    num_detect = int(input('한 프레임당 탐색 개체 수 : '))
+    num_detect = NUMBER_OUT_SPEACH #  int(input('한 프레임당 탐색 개체 수 : '))
 
     calculated_danger = np.array(CacModule.return_highest_danger(od_classes, od_location, res, dep_road_res, cur_road, num_detect))
     classes, direction, order = calculated_danger[:, 0], calculated_danger[:, 1], calculated_danger[:, 2]
