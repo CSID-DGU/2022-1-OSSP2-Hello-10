@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 from odmodule.odmodule import OdModel
 from depmodule.depmodule import DepModel
 from segmodule import segmodule
@@ -29,8 +30,8 @@ while(True):
     od_outputs, od_res = OdModule.predict(image)
     object_class = od_outputs['instances'].pred_classes.numpy()
     size = od_outputs['instances'].image_size
-    objcet_location = od_outputs['instances'].pred_boxes.tensor.numpy()
-    objcet_location = objcet_location.astype(int)
+    object_location = od_outputs['instances'].pred_boxes.tensor.numpy()
+    object_location = object_location.astype(int)
     print("장애물 인식 모듈 Finished")
 
     segmap, seg_res = SegModule.predict(image)
@@ -44,16 +45,17 @@ while(True):
     MgModule.current_road(class_seg_map)
     cur_road = MgModule.now_road
     dep_road_res = MgModule.dep_road(class_seg_map, distance)
-    od_classes, dep_obj_res = MgModule.dep_objects(object_class, objcet_location, distance)
-    od_location = MgModule.loc_object(size, objcet_location)
+    od_classes, res = MgModule.dep_objects(object_class, object_location, distance)
+    od_location = MgModule.loc_object(size, object_location)
     print("정보 종합 모듈 Finished")
 
     num_detect = int(input('한 프레임당 탐색 개체 수 : '))
 
-    classes, direction, order = CacModule.return_highest_danger(
-        od_classes, od_location, res, dep_road_res, cur_road, num_detect)
+    calculated_danger = np.array(CacModule.return_highest_danger(od_classes, od_location, res, dep_road_res, cur_road, num_detect))
+    classes, direction, order = calculated_danger[:, 0], calculated_danger[:, 1], calculated_danger[:, 2]
     print("위험도 계산 모듈 Finished")
 
+    org_image = image.copy()
     num = classes.size
     for i in range(num):
         if classes[i] == -1 or classes[i] == -2:
@@ -64,5 +66,7 @@ while(True):
                                     (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
             ArModule.runmodule(classes[i], direction[i])
             cv2.imshow("result", res_img)
-            cv2.waitKey(2000)
+            cv2.waitKey(500)
+            cv2.destroyAllWindows()
+            image = org_image
     print("알람 모듈 Finished")

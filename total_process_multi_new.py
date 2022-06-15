@@ -36,6 +36,7 @@ def dep_pred(id, img):
 
 def exe_alarm(id, image, classes, direction, order, object_location):
     global ArModule
+    org_image = image.copy()
     num = classes.size
     for i in range(num):
         if classes[i] == -1 or classes[i] == -2:
@@ -45,8 +46,10 @@ def exe_alarm(id, image, classes, direction, order, object_location):
             res_img = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
                                     (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
             ArModule.runmodule(classes[i], direction[i])
-            cv2.imshow("result", image)
-            cv2.waitKey(2000)
+            cv2.imshow("result", res_img)
+            cv2.waitKey(500)
+            cv2.destroyAllWindows()
+            image = org_image
     print("알람 모듈 Finished")
 
 
