@@ -24,7 +24,7 @@ from tqdm import tqdm
 
 ### RUN OPTIONS ###
 # MODEL_PATH = "model_iou_77.pth.tar"
-MODEL_PATH = "/content/drive/MyDrive/WO/model_iou.pth.tar"
+MODEL_PATH = "model_iou_77.pth.tar"
 ORIGINAL_HEIGHT = 720
 ORIGINAL_WIDTH = 1280
 MODEL_HEIGHT = 512
