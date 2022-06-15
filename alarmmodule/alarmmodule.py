@@ -81,3 +81,6 @@ class Alarm:
         engine.setProperty('volume', 1)
         engine.say("준비가 되었습니다. 보행을 시작해주세요.")
         engine.runAndWait()
+
+    def __init__(self):
+        self.loadspeak()
