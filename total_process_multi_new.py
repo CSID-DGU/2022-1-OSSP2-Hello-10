@@ -43,13 +43,13 @@ def exe_alarm(id, image, classes, direction, order, object_location):
             ArModule.runmodule(classes[i], direction[i])
             # 도로 시각화
         else:
-            res_img = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
+            res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
                                     (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
             ArModule.runmodule(classes[i], direction[i])
-            cv2.imshow("result", res_img)
-            cv2.waitKey(500)
+            cv2.imshow("result", image)
+            cv2.waitKey(1000)
             cv2.destroyAllWindows()
-            image = org_image
+            image = org_image.copy()
     print("알람 모듈 Finished")
 
 
