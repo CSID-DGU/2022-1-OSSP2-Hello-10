@@ -54,7 +54,7 @@ while(True):
         od_classes, od_location, res, dep_road_res, cur_road, num_detect)
     print("위험도 계산 모듈 Finished")
 
-    num = len(classes)
+    num = classes.size
     for i in range(num):
         if classes[i] == -1 or classes[i] == -2:
             ArModule.runmodule(classes[i], direction[i])
