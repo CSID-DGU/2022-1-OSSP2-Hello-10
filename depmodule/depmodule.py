@@ -9,8 +9,8 @@ import cv2
 import torch
 from torchvision import transforms
 
-import networks
-from utils import download_model_if_doesnt_exist
+from . import networks
+from .utils import download_model_if_doesnt_exist
 
 class DepModel :
     def __init__(self) -> None:
