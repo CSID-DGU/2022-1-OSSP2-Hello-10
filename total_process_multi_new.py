@@ -34,23 +34,26 @@ def dep_pred(id, img):
     print("거리 예측 모듈 Finished")
 
 
-def exe_alarm(id, image, classes, direction, order, object_location):
+def exe_alarm(id, image, classes, direction, order, object_location: np.ndarray):
     global ArModule
-    org_image = image.copy()
-    num = classes.size
-    for i in range(num):
-        if classes[i] == -1 or classes[i] == -2:
-            ArModule.runmodule(classes[i], direction[i])
-            # 도로 시각화
-        else:
-            res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
-                                    (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
-            ArModule.runmodule(classes[i], direction[i])
-            cv2.imshow("result", image)
-            cv2.waitKey(1000)
-            cv2.destroyAllWindows()
-            image = org_image.copy()
-    print("알람 모듈 Finished")
+
+    if object_location.size: # 값이 존재하면
+        
+        org_image = image.copy()
+        num = classes.size
+        for i in range(num):
+            if classes[i] == -1 or classes[i] == -2:
+                ArModule.runmodule(classes[i], direction[i])
+                # 도로 시각화
+            else:
+                # res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
+                                        # (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
+                ArModule.runmodule(classes[i], direction[i])
+                # cv2.imshow("result", res_image)
+                # cv2.waitKey(2000)
+                # cv2.destroyAllWindows()
+                image = org_image.copy()
+        print("알람 모듈 Finished")
 
 
 OdModule = OdModel()
@@ -68,8 +71,14 @@ ArModule = Alarm()
 print("알람 모듈 Loaded")
 
 cap = cv2.VideoCapture("street3.avi")
-
+image, classes, direction, order, object_location = np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
 while(True):
+    
+    th4 = Thread(target=exe_alarm, args=(
+        4, image, classes, direction, order, object_location))
+    # if th4.is_alive():
+    th4.start()
+
     start = time.time()
     ret, image = cap.read()
 
@@ -89,6 +98,7 @@ while(True):
     th1.join()
     th2.join()
     th3.join()
+    th4.join()
 
     MgModule.current_road(class_segmap)
     cur_road = MgModule.now_road
@@ -104,11 +114,7 @@ while(True):
     classes, direction, order = calculated_danger[:, 0], calculated_danger[:, 1], calculated_danger[:, 2]
     print("위험도 계산 모듈 Finished")
 
-    th4 = Thread(target=exe_alarm, args=(
-        4, image, classes, direction, order, object_location))
-    if th4.is_alive():
-        th4.join()
-    th4.start()
+
 
     end = time.time()
     print(f"{end - start:.5f} sec")
