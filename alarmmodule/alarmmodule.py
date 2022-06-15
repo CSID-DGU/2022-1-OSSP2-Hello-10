@@ -6,8 +6,6 @@ import pyttsx3
 
 
 class Alarm:
-    def __init__(self) -> None:
-        pass
 
     def speak(self, text):
         engine = pyttsx3.init()
