@@ -11,7 +11,6 @@ import time
 
 
 def od_pred(id, img):
-    print("장애물 인식 모듈 Loaded")
     global object_class, object_location, size, OdModule
     od_outputs, _ = OdModule.predict(img)
     object_class = od_outputs['instances'].pred_classes.cpu().numpy()
