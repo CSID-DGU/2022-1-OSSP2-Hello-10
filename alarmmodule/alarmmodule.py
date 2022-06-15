@@ -1,8 +1,9 @@
-#pip install pyttsx3
-#pip install playsound == 1.2.2
+# pip install pyttsx3
+# pip install playsound == 1.2.2
 
 import playsound
 import pyttsx3
+
 
 class Alarm:
     def __init__(self) -> None:
@@ -74,4 +75,12 @@ class Alarm:
             playsound.playsound('beep.wav')
             self.speak(d + ",," + c)
 
+    def loadspeak(self):
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 150)
+        engine.setProperty('volume', 1)
+        engine.say("준비가 되었습니다. 보행을 시작해주세요.")
+        engine.runAndWait()
 
+    def __init__(self):
+        self.loadspeak()
