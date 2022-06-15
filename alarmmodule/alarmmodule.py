@@ -33,7 +33,7 @@ class Alarm:
         elif classes == 7:
             c = '버스'
         elif classes == 8:
-            c = '신호등'
+            c = '표지판'
         elif classes == 9:
             c = '오토바이'
         elif classes == 10:
