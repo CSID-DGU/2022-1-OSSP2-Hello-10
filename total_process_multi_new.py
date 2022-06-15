@@ -46,7 +46,7 @@ def exe_alarm(id, image, classes, direction, order, object_location):
             res_img = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
                                     (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
             ArModule.runmodule(classes[i], direction[i])
-            cv2.imshow("result", res_img)
+            cv2.imshow("result", image)
             cv2.waitKey(2000)
     print("알람 모듈 Finished")
 
@@ -98,8 +98,8 @@ while(True):
 
     num_detect = int(input('한 프레임당 탐색 개체 수 : '))
 
-    classes, direction, order = CacModule.return_highest_danger(
-        od_classes, od_location, res, dep_road_res, cur_road, num_detect)
+    calculated_danger = np.array(CacModule.return_highest_danger(od_classes, od_location, res, dep_road_res, cur_road, num_detect))
+    classes, direction, order = calculated_danger[:, 0], calculated_danger[:, 1], calculated_danger[:, 2]
     print("위험도 계산 모듈 Finished")
 
     th4 = Thread(target=exe_alarm, args=(
