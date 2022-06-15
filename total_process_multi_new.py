@@ -11,7 +11,6 @@ import time
 
 
 def od_pred(id, img):
-    print("장애물 인식 모듈 Loaded")
     global object_class, object_location, size, OdModule
     od_outputs, _ = OdModule.predict(img)
     object_class = od_outputs['instances'].pred_classes.cpu().numpy()
@@ -37,7 +36,7 @@ def dep_pred(id, img):
 
 def exe_alarm(id, image, classes, direction, order, object_location):
     global ArModule
-    num = len(classes)
+    num = classes.size
     for i in range(num):
         if classes[i] == -1 or classes[i] == -2:
             ArModule.runmodule(classes[i], direction[i])
