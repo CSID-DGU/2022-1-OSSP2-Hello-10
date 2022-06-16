@@ -39,7 +39,7 @@ def dep_pred(id, img):
     print("거리 예측 모듈 Finished")
 
 
-def exe_alarm(id, image, classes, direction, order, object_location, class_segmap, segmap):
+def exe_alarm(id, image, classes, direction, order, danger, object_location, color_segmap, segmap):
     global ArModule
 
     if type(image) == np.ndarray:  # 값이 들어왔으면
@@ -48,7 +48,7 @@ def exe_alarm(id, image, classes, direction, order, object_location, class_segma
         num = classes.size
         for i in range(num):
             if classes[i] == -1 or classes[i] == -2:
-                ArModule.runmodule(classes[i], direction[i])
+                ArModule.runmodule(classes[i], direction[i], danger[i])
                 if VISUALIZE and classes[i] == -1:
                     res_image = image
                 # 도로 시각화
@@ -80,7 +80,7 @@ def exe_alarm(id, image, classes, direction, order, object_location, class_segma
                     # cv2.imshow("result", res_image)
                     # cv2.waitKey(2000)
                     # cv2.destroyAllWindows()
-                ArModule.runmodule(classes[i], direction[i])
+                ArModule.runmodule(classes[i], direction[i], danger[i])
 
                 image = org_image.copy()
 
@@ -108,16 +108,16 @@ print("위험도 계산 모듈 Loaded")
 ArModule = Alarm()
 print("알람 모듈 Loaded")
 
-#cap = cv2.VideoCapture("street3.avi")
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture("street3.avi")
+# cap = cv2.VideoCapture(1)
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
-image, classes, direction, order, object_location, color_segmap, segmap = None, None, None, None, None, None, None
+image, classes, direction, order, danger, object_location, color_segmap, segmap = None, None, None, None, None, None, None, None
 while(True):
 
     th4 = Thread(target=exe_alarm, args=(
-        4, image, classes, direction, order, object_location, color_segmap, segmap))
+        4, image, classes, direction, order, danger, object_location, color_segmap, segmap))
     # if th4.is_alive():
     th4.start()
 
@@ -155,7 +155,7 @@ while(True):
     calculated_danger = np.array(CacModule.return_highest_danger(
         od_classes, od_location, res, dep_road_res, cur_road, num_detect))
     if calculated_danger.size !=0:
-        classes, direction, order = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2]
+        classes, direction, order, danger = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2], calculated_danger[:, 3]
     print("위험도 계산 모듈 Finished")
 
     end = time.time()

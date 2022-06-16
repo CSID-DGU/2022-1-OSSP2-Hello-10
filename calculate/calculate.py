@@ -80,7 +80,7 @@ class Data:
         for i in range(len(temp)):
             if i == danger_num:
                 break
-            res.append([temp[i][0], temp[i][1], temp[i][2]])
+            res.append([temp[i][0], temp[i][1], temp[i][2], temp[i][3]])
         return res
 
         
