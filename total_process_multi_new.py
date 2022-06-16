@@ -47,53 +47,54 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, seg
         org_image = image.copy()
         num = classes.size
         for i in range(num):
-            if classes[i] == -1 or classes[i] == -2:
-                # ArModule.runmodule(classes[i], direction[i], danger[i])
-                if VISUALIZE and classes[i] == -1:
-                    res_image = image
-                # 도로 시각화
-                if VISUALIZE and classes[i] == -2:  # 횡단보도 시각화
-                    seg_out = copy.copy(segmap)
-                    for c in segmodule.CUSTOM_COLOR_MAP:
-                        if c != segmodule.CUSTOM_COLOR_MAP[3]:
-                            seg_out[(seg_out == c).all(axis=2)] = [0, 0, 0]
+            if danger[i] != 0:
+                if classes[i] == -1 or classes[i] == -2:
+                    # ArModule.runmodule(classes[i], direction[i])
+                    if VISUALIZE and classes[i] == -1:
+                        res_image = image
+                    # 도로 시각화
+                    if VISUALIZE and classes[i] == -2:  # 횡단보도 시각화
+                        seg_out = copy.copy(segmap)
+                        for c in segmodule.CUSTOM_COLOR_MAP:
+                            if c != segmodule.CUSTOM_COLOR_MAP[3]:
+                                seg_out[(seg_out == c).all(axis=2)] = [0, 0, 0]
 
-                        h, w, _ = np.array(seg_out).shape
-                        img_resized = cv2.resize(image, (w, h))
-                        res_image = (img_resized * 0.5 +
-                                     seg_out * 0.5).astype(np.uint8)
+                            h, w, _ = np.array(seg_out).shape
+                            img_resized = cv2.resize(image, (w, h))
+                            res_image = (img_resized * 0.5 +
+                                         seg_out * 0.5).astype(np.uint8)
 
-            else:
-                # 장애물 시각화
+                else:
+                    # 장애물 시각화
+                    if VISUALIZE:
+                        res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
+                                                  (object_location[order[i]][2], object_location[order[i]][3]),
+                                                  (0, 0, 255), 2)
+                        seg_out = copy.copy(segmap)
+                        for c in segmodule.CUSTOM_COLOR_MAP:
+                            if c != segmodule.CUSTOM_COLOR_MAP[3]:
+                                seg_out[(seg_out == c).all(axis=2)] = [0, 0, 0]
+
+                        # h, w, _ = np.array(seg_out).shape
+                        # img_resized = cv2.resize(res_image, (w, h))
+                        # res_image = (img_resized * 0.5 +
+                        #              seg_out * 0.5).astype(np.uint8)
+                        # cv2.imshow("result", res_image)
+                        # cv2.waitKey(2000)
+                        # cv2.destroyAllWindows()
+                    # ArModule.runmodule(classes[i], direction[i])
+
+                    image = org_image.copy()
+
                 if VISUALIZE:
-                    res_image = cv2.rectangle(image, (object_location[order[i]][0], object_location[order[i]][1]),
-                                              (object_location[order[i]][2], object_location[order[i]][3]), (0, 0, 255), 2)
-                    seg_out = copy.copy(segmap)
-                    for c in segmodule.CUSTOM_COLOR_MAP:
-                        if c != segmodule.CUSTOM_COLOR_MAP[3]:
-                            seg_out[(seg_out == c).all(axis=2)] = [0, 0, 0]
 
-                    # h, w, _ = np.array(seg_out).shape
-                    # img_resized = cv2.resize(res_image, (w, h))
-                    # res_image = (img_resized * 0.5 +
-                    #              seg_out * 0.5).astype(np.uint8)
-                    # cv2.imshow("result", res_image)
-                    # cv2.waitKey(2000)
-                    # cv2.destroyAllWindows()
-                # ArModule.runmodule(classes[i], direction[i], danger[i])
-
-                image = org_image.copy()
-
-            if VISUALIZE:
-
-                resize_result = cv2.resize(res_image, (1080, 720))
-                cv2.imshow("result", resize_result)
-                cv2.waitKey(500)
-                ArModule.runmodule(classes[i], direction[i], danger[i])
-                cv2.destroyAllWindows()
-            else:
-                ArModule.runmodule(classes[i], direction[i], danger[i])
-
+                    resize_result = cv2.resize(res_image, (1080, 720))
+                    cv2.imshow("result", resize_result)
+                    cv2.waitKey(500)
+                    ArModule.runmodule(classes[i], direction[i])
+                    cv2.destroyAllWindows()
+                else:
+                    ArModule.runmodule(classes[i], direction[i])
 
         print("알람 모듈 Finished")
 

@@ -60,19 +60,18 @@ class Alarm:
             d = "전방위에"
         return d
 
-    def runmodule(self, classes, direction, danger):
-        if danger != 0:
-            if classes == -1:
-                playsound.playsound('beep.wav')
-                self.speak("인도 벗어남")
-            elif classes == -2:
-                playsound.playsound('beep.wav')
-                self.speak("전방에" + ",," + "횡단보도")
-            else:
-                d = self.transform_dist(direction)
-                c = self.transform_obj(classes)
-                playsound.playsound('beep.wav')
-                self.speak(d + ",," + c)
+    def runmodule(self, classes, direction):
+        if classes == -1:
+            playsound.playsound('beep.wav')
+            self.speak("인도 벗어남")
+        elif classes == -2:
+            playsound.playsound('beep.wav')
+            self.speak("전방에" + ",," + "횡단보도")
+        else:
+            d = self.transform_dist(direction)
+            c = self.transform_obj(classes)
+            playsound.playsound('beep.wav')
+            self.speak(d + ",," + c)
 
     def loadspeak(self):
         engine = pyttsx3.init()
