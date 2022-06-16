@@ -14,6 +14,7 @@ from .utils import download_model_if_doesnt_exist
 
 class DepModel :
     def __init__(self) -> None:
+        self.i = 0
         pass
 
     def load_model(self, model_name  = "mono_640x192") -> None:
@@ -92,7 +93,6 @@ class DepModel :
         plt.imshow(self.disp_resized_np, cmap='magma', vmax=vmax)
         plt.title("Depth prediction", fontsize=22)
         plt.axis('off')
-
         plt.show()
 
     def res_show(self, vmax_percentage = 95):
@@ -103,3 +103,8 @@ class DepModel :
         plt.axis('off')
 
         plt.show()
+
+    def save(self, vmax_percentage = 95)-> None:
+        vmax = np.percentile(self.disp_resized_np, vmax_percentage) # 백분위 percentage% 수
+        plt.imsave("res/%d.png"%self.i,self.disp_resized_np, cmap='magma', vmax=vmax)
+        self.i += 1
