@@ -61,7 +61,7 @@ while(True):
     calculated_danger = np.array(CacModule.return_highest_danger(
         od_classes, od_location, res, dep_road_res, cur_road, num_detect))
     if calculated_danger.size !=0:
-        classes, direction, order = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2]
+        classes, direction, order, danger = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2], calculated_danger[:, 3]
     print("위험도 계산 모듈 Finished")
 
     if type(image) == np.ndarray:  # 값이 들어왔으면
@@ -70,7 +70,7 @@ while(True):
         num = classes.size
         for i in range(num):
             if classes[i] == -1 or classes[i] == -2:
-                ArModule.runmodule(classes[i], direction[i])
+                ArModule.runmodule(classes[i], direction[i], danger[i])
                 if VISUALIZE and classes[i] == -1:
                     res_image = image
                 # 도로 시각화
@@ -102,7 +102,7 @@ while(True):
                     # cv2.imshow("result", res_image)
                     # cv2.waitKey(2000)
                     # cv2.destroyAllWindows()
-                ArModule.runmodule(classes[i], direction[i])
+                ArModule.runmodule(classes[i], direction[i], danger[i])
 
                 image = org_image.copy()
 
