@@ -10,9 +10,9 @@ from threading import Thread
 import time
 import copy
 
-NUMBER_OUT_SPEACH = 2
+NUMBER_OUT_SPEACH = 1
 VISUALIZE = True
-
+WATCH_FRAMES = 64 # 몇 프레임마다 하나씩 읽어오는지, 주의!!! 카메라로 할때는 사용하지 않는다. 동영상 읽을 때 비슷한 프레임이 너무 많아서 건너뛰기 위함.
 
 def od_pred(id, img):
     global object_class, object_location, size, OdModule
@@ -48,7 +48,7 @@ def exe_alarm(id, image, classes, direction, order, object_location, class_segma
         num = classes.size
         for i in range(num):
             if classes[i] == -1 or classes[i] == -2:
-                ArModule.runmodule(classes[i], direction[i])
+                # ArModule.runmodule(classes[i], direction[i])
                 if VISUALIZE and classes[i] == -1:
                     res_image = image
                 # 도로 시각화
@@ -80,7 +80,7 @@ def exe_alarm(id, image, classes, direction, order, object_location, class_segma
                     # cv2.imshow("result", res_image)
                     # cv2.waitKey(2000)
                     # cv2.destroyAllWindows()
-                ArModule.runmodule(classes[i], direction[i])
+                # ArModule.runmodule(classes[i], direction[i])
 
                 image = org_image.copy()
 
@@ -88,8 +88,12 @@ def exe_alarm(id, image, classes, direction, order, object_location, class_segma
 
                 resize_result = cv2.resize(res_image, (1080, 720))
                 cv2.imshow("result", resize_result)
-                cv2.waitKey(2000)
+                cv2.waitKey(500)
+                ArModule.runmodule(classes[i], direction[i])
                 cv2.destroyAllWindows()
+            else:
+                ArModule.runmodule(classes[i], direction[i])
+
 
         print("알람 모듈 Finished")
 
@@ -108,8 +112,8 @@ print("위험도 계산 모듈 Loaded")
 ArModule = Alarm()
 print("알람 모듈 Loaded")
 
-#cap = cv2.VideoCapture("street3.avi")
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture("street_cut.mp4")
+# cap = cv2.VideoCapture(1)
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
@@ -122,7 +126,11 @@ while(True):
     th4.start()
 
     start = time.time()
-    ret, image = cap.read()
+    for _ in range(WATCH_FRAMES):
+        ret, image = cap.read()
+
+    if not ret:
+        break
 
     object_location, object_class, size = None, None, None
     th1 = Thread(
@@ -144,7 +152,7 @@ while(True):
 
     MgModule.current_road(class_segmap)
     cur_road = MgModule.now_road
-    dep_road_res = MgModule.dep_road(class_segmap, distance)
+    dep_road_res = MgModule.dep_road(class_segmap, distance, 30)
     od_classes, res = MgModule.dep_objects(
         object_class, object_location, distance)
     od_location = MgModule.loc_object(size, object_location)
@@ -154,8 +162,8 @@ while(True):
 
     calculated_danger = np.array(CacModule.return_highest_danger(
         od_classes, od_location, res, dep_road_res, cur_road, num_detect))
-    if calculated_danger.size !=0:
-        classes, direction, order = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2]
+    # if calculated_danger.size !=0:
+    classes, direction, order = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2]
     print("위험도 계산 모듈 Finished")
 
     end = time.time()
