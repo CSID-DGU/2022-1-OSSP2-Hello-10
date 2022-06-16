@@ -48,7 +48,7 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, col
         num = classes.size
         for i in range(num):
             if classes[i] == -1 or classes[i] == -2:
-                # ArModule.runmodule(classes[i], direction[i])
+                # ArModule.runmodule(classes[i], direction[i], danger[i])
                 if VISUALIZE and classes[i] == -1:
                     res_image = image
                 # 도로 시각화
@@ -80,7 +80,7 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, col
                     # cv2.imshow("result", res_image)
                     # cv2.waitKey(2000)
                     # cv2.destroyAllWindows()
-                # ArModule.runmodule(classes[i], direction[i])
+                # ArModule.runmodule(classes[i], direction[i], danger[i])
 
                 image = org_image.copy()
 
@@ -89,10 +89,10 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, col
                 resize_result = cv2.resize(res_image, (1080, 720))
                 cv2.imshow("result", resize_result)
                 cv2.waitKey(500)
-                ArModule.runmodule(classes[i], direction[i])
+                ArModule.runmodule(classes[i], direction[i], danger[i])
                 cv2.destroyAllWindows()
             else:
-                ArModule.runmodule(classes[i], direction[i])
+                ArModule.runmodule(classes[i], direction[i], danger[i])
 
 
         print("알람 모듈 Finished")
@@ -163,7 +163,7 @@ while(True):
     calculated_danger = np.array(CacModule.return_highest_danger(
         od_classes, od_location, res, dep_road_res, cur_road, num_detect))
     # if calculated_danger.size !=0:
-    classes, direction, order = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2]
+    classes, direction, order, danger = calculated_danger[:,0], calculated_danger[:, 1], calculated_danger[:, 2], calculated_danger[:, 3]
     print("위험도 계산 모듈 Finished")
 
     end = time.time()
