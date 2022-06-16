@@ -62,12 +62,13 @@ class Data:
         # dep_road_res : 도로별 가장 가까운 거리
 		# cur_road : 현재 사용자가 있는 도로의 종류
         #현재 도로가 인도일 때 차도가 일정거리 이내이면 도로이탈 반환
-        # cur_road 6: 차도
+        # cur_road 6: 인도
+        # cur_road 5: 차도
         # cur_road 3: 횡단보도
         temp = []
         res = []
         # print("type", type(self))
-        if cur_road == 6 and dep_road_res[5] <= 0.1:
+        if cur_road == 6 and dep_road_res[3] <= 0.1:
             temp.append([-1, 0, -1, 11])
         if cur_road == 6 and dep_road_res[5] <= 0.15:
             temp.append([-2, 0, -1, 10])
