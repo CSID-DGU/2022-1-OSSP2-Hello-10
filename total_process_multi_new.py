@@ -48,7 +48,7 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, seg
         num = classes.size
         for i in range(num):
             if classes[i] == -1 or classes[i] == -2:
-                # ArModule.runmodule(classes[i], direction[i])
+                # ArModule.runmodule(classes[i], direction[i], danger[i])
                 if VISUALIZE and classes[i] == -1:
                     res_image = image
                 # 도로 시각화
@@ -80,7 +80,7 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, seg
                     # cv2.imshow("result", res_image)
                     # cv2.waitKey(2000)
                     # cv2.destroyAllWindows()
-                # ArModule.runmodule(classes[i], direction[i])
+                # ArModule.runmodule(classes[i], direction[i], danger[i])
 
                 image = org_image.copy()
 
