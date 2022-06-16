@@ -39,7 +39,7 @@ def dep_pred(id, img):
     print("거리 예측 모듈 Finished")
 
 
-def exe_alarm(id, image, classes, direction, order, object_location, class_segmap, segmap):
+def exe_alarm(id, image, classes, direction, order, danger, object_location, color_segmap, segmap):
     global ArModule
 
     if type(image) == np.ndarray:  # 값이 들어왔으면
@@ -112,16 +112,16 @@ print("위험도 계산 모듈 Loaded")
 ArModule = Alarm()
 print("알람 모듈 Loaded")
 
-cap = cv2.VideoCapture("street_cut.mp4")
+cap = cv2.VideoCapture("street3.avi")
 # cap = cv2.VideoCapture(1)
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
-image, classes, direction, order, object_location, color_segmap, segmap = None, None, None, None, None, None, None
+image, classes, direction, order, danger, object_location, color_segmap, segmap = None, None, None, None, None, None, None, None
 while(True):
 
     th4 = Thread(target=exe_alarm, args=(
-        4, image, classes, direction, order, object_location, color_segmap, segmap))
+        4, image, classes, direction, order, danger, object_location, color_segmap, segmap))
     # if th4.is_alive():
     th4.start()
 

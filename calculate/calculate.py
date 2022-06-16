@@ -67,12 +67,8 @@ class Data:
         # cur_road 3: 횡단보도
         temp = []
         res = []
-<<<<<<< HEAD
         # print("type", type(self))
         if cur_road == 6 and dep_road_res[3] <= 0.1:
-=======
-        if cur_road == 6 and dep_road_res[5] <= 0.1:
->>>>>>> 1257de561d7bfa99d641322a96c401c58f796b4c
             temp.append([-1, 0, -1, 11])
         if cur_road == 6 and dep_road_res[5] <= 0.15:
             temp.append([-2, 0, -1, 10])
