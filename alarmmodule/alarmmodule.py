@@ -60,8 +60,10 @@ class Alarm:
             d = "전방위에"
         return d
 
-    def runmodule(self, classes, direction):
-        if classes == -1:
+    def runmodule(self, classes, direction, danger):
+        if danger == 0:
+            self.speak("알림 안함")
+        elif classes == -1:
             playsound.playsound('beep.wav')
             self.speak("인도 벗어남")
         elif classes == -2:

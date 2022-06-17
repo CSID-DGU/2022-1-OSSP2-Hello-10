@@ -47,9 +47,9 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, seg
         org_image = image.copy()
         num = classes.size
         for i in range(num):
-            if danger[i] != 0:
+            if danger[i] == 0:
                 if classes[i] == -1 or classes[i] == -2:
-                    # ArModule.runmodule(classes[i], direction[i])
+                    # ArModule.runmodule(classes[i], direction[i], danger[i])
                     if VISUALIZE and classes[i] == -1:
                         res_image = image
                     # 도로 시각화
@@ -82,7 +82,7 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, seg
                         # cv2.imshow("result", res_image)
                         # cv2.waitKey(2000)
                         # cv2.destroyAllWindows()
-                    # ArModule.runmodule(classes[i], direction[i])
+                    # ArModule.runmodule(classes[i], direction[i], danger[i])
 
                     image = org_image.copy()
 
@@ -91,10 +91,10 @@ def exe_alarm(id, image, classes, direction, order, danger, object_location, seg
                     resize_result = cv2.resize(res_image, (1080, 720))
                     cv2.imshow("result", resize_result)
                     cv2.waitKey(500)
-                    ArModule.runmodule(classes[i], direction[i])
+                    ArModule.runmodule(classes[i], direction[i], danger[i])
                     cv2.destroyAllWindows()
                 else:
-                    ArModule.runmodule(classes[i], direction[i])
+                    ArModule.runmodule(classes[i], direction[i], danger[i])
 
         print("알람 모듈 Finished")
 
@@ -113,7 +113,7 @@ print("위험도 계산 모듈 Loaded")
 ArModule = Alarm()
 print("알람 모듈 Loaded")
 
-cap = cv2.VideoCapture("street_cut.mp4")
+cap = cv2.VideoCapture("street3.avi")
 # cap = cv2.VideoCapture(1)
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
