@@ -65,7 +65,7 @@ class Alarm:
             self.speak("알림 안함")
         elif classes == -1:
             playsound.playsound('beep.wav')
-            self.speak("인도 벗어남")
+            self.speak("도로 이탈 주의")
         elif classes == -2:
             playsound.playsound('beep.wav')
             self.speak("전방에" + ",," + "횡단보도")
